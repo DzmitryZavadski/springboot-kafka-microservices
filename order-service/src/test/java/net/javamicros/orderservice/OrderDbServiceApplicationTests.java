@@ -1,0 +1,13 @@
+package net.javamicros.orderservice;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class OrderDbServiceApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

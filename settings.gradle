@@ -1,0 +1,11 @@
+pluginManagement {
+	repositories {
+		maven { url = 'https://repo.spring.io/snapshot' }
+		gradlePluginPortal()
+	}
+}
+rootProject.name = 'springboot-kafka-microservices'
+include 'base-domains'
+include 'order-service'
+include 'email-service'
+include 'stock-service'

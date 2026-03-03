@@ -1,28 +1,18 @@
 package net.javamicros.orderservice.service;
 
-import net.javamicros.basedomains.dto.OrderDb;
-import org.springframework.http.ResponseEntity;
+import net.javamicros.basedomains.dto.OrderDbModel;
+import net.javamicros.orderservice.client.StockServiceClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Service
 public class StockService {
+    private final StockServiceClient stockServiceClient;
 
-    private final RestClient restClient;
-
-    public StockService(RestClient restClient) {
-        this.restClient = restClient;
+    public StockService(StockServiceClient stockServiceClient) {
+        this.stockServiceClient = stockServiceClient;
     }
 
-    public String postOrder(OrderDb orderDb) {
-        ResponseEntity<String> response = restClient.post()
-                .uri("/orders")
-                .contentType(APPLICATION_JSON)
-                .body(orderDb)
-                .retrieve()
-                .toEntity(String.class);
-        return response.getBody();
+    public String createOrderInStock(OrderDbModel orderDbModel) {
+        return stockServiceClient.postOrder(orderDbModel);
     }
 }

@@ -8,8 +8,7 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderRestClient {
-    private String orderId;
+public class OrderApiModel {
     private String orderName;
     private int quantity;
     private double price;

@@ -8,7 +8,7 @@ import lombok.*;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDb {
+public class OrderDbModel {
     private String orderId;
     private String orderName;
     private int quantity;

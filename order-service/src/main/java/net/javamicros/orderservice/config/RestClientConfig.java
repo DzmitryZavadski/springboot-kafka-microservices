@@ -7,8 +7,11 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-    @Bean
+    @Bean("stockRest")
     RestClient restClient() {
-        return RestClient.builder().build();
+        return RestClient
+                .builder()
+                .baseUrl("http://localhost:8081")
+                .build();
     }
 }

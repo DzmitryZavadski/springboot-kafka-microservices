@@ -1,46 +1,42 @@
 package net.javamicros.orderservice.controller;
 
-import net.javamicros.basedomains.dto.OrderDb;
-import net.javamicros.basedomains.dto.OrderStatus;
-import net.javamicros.orderservice.kafka.OrderProducer;
+import net.javamicros.basedomains.dto.OrderApiModel;
+import net.javamicros.basedomains.dto.OrderDbModel;
+import net.javamicros.orderservice.mapper.OrderMapper;
 import net.javamicros.orderservice.service.OrderDbService;
 import net.javamicros.orderservice.service.StockService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
 public class OrderController {
 
-    private final OrderProducer orderProducer;
     private final StockService stockService;
     private final OrderDbService orderDbService;
+    private final OrderMapper orderMapper;
 
-    public OrderController(OrderProducer orderProducer, StockService stockService, OrderDbService orderDbService) {
-        this.orderProducer = orderProducer;
+    public OrderController(StockService stockService, OrderDbService orderDbService, OrderMapper orderMapper) {
         this.stockService = stockService;
         this.orderDbService = orderDbService;
+        this.orderMapper = orderMapper;
     }
 
     @PostMapping("/orders")
-    public String placeHolder(@RequestBody OrderDb orderDb) {
+    public String placeHolder(@RequestBody OrderApiModel orderApiModel) {
 
-        orderDb.setOrderId(UUID.randomUUID().toString());
-        orderDb.setOrderStatus(OrderStatus.PENDING);
-//        OrderEvent orderEvent = new OrderEvent();
-//        orderEvent.setStatus(OrderStatus.PENDING);
-//        orderEvent.setMessage("order status is in pending state");
-//        orderEvent.setOrder(order);
+        OrderDbModel order = orderMapper.toOrderDbModel(orderApiModel);
 
-        orderDbService.addOrder(orderDb);
+        orderDbService.addOrder(order);
 
-        // service -> rest client with POST request to stock service
-        String stockOrderId = stockService.postOrder(orderDb);
+        String stockOrderId = stockService.createOrderInStock(order);
 
         return stockOrderId;
+    }
+
+    @GetMapping("/orders")
+    public List<OrderDbModel> getOrders() {
+        return orderDbService.getOrders();
     }
 }

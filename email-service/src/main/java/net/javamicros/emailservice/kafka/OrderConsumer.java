@@ -1,6 +1,6 @@
 package net.javamicros.emailservice.kafka;
 
-import net.javamicros.basedomains.dto.OrderEvent;
+import net.javamicros.basedomains.dto.OrderEventModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,7 +15,7 @@ public class OrderConsumer {
             topics = "${spring.kafka.topic.name}",
             groupId = "${spring.kafka.consumer.group-id}"
     )
-    public void consume(OrderEvent orderEvent) {
+    public void consume(OrderEventModel orderEvent) {
         log.info(String.format("Received Order Event in email service => %s", orderEvent.toString()));
 
         // save email to the customer

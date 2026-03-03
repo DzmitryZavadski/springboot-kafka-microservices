@@ -3,16 +3,12 @@ server:
 
 spring:
   kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: stock
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: net.javamicros.basedomains.dto
+    bootstrap-servers: localhost:9092
     topic:
       name: order_topics
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.trusted.packages: "net.javamicros.orderservice.dto"

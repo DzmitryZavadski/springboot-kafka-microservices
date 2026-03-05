@@ -1,6 +1,8 @@
 package net.javamicros.orderservice.service;
 
 import net.javamicros.basedomains.dto.OrderDbModel;
+import net.javamicros.orderservice.repository.OrderRepository;
+import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,22 +11,22 @@ import java.util.Optional;
 
 @Service
 public class OrderDbService {
-    private final List<OrderDbModel> orderDbModels;
+    private final OrderRepository orderRepository;
 
-    public OrderDbService() {
-        orderDbModels = new ArrayList<>();
+    public OrderDbService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     public List<OrderDbModel> getOrders() {
-        return orderDbModels;
+        return orderRepository.findAll();
     }
 
     public void addOrder(OrderDbModel orderDbModel) {
-        orderDbModels.add(orderDbModel);
+        orderRepository.save(orderDbModel);
     }
 
     public Optional<OrderDbModel> findOrderById(String id) {
-        return orderDbModels.stream().filter(order -> order.getOrderId().equals(id)).findFirst();
+        return orderRepository.findById(Long.valueOf(id));
     }
 
     public void updateOrder(OrderDbModel orderDbModel) {
@@ -37,7 +39,7 @@ public class OrderDbService {
             updatedOrder.setOrderStatus(orderDbModel.getOrderStatus());
 
         } else {
-            orderDbModels.add(orderDbModel);
+            orderRepository.save(orderDbModel);
         }
     }
 }

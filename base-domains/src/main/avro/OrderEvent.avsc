@@ -10,7 +10,7 @@
       "type": {
         "type": "enum",
         "name": "OrderStatus",
-        "symbols": ["CREATED", "CONFIRMED", "REJECTED"]
+        "symbols": ["SUCCESS", "PENDING", "FAILED"]
       }
     },
     {

@@ -1,41 +1,12 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.5.11-SNAPSHOT'
-	id 'io.spring.dependency-management' version '1.1.7'
     id("com.github.davidmc24.gradle.plugin.avro") version "1.9.1"
 }
 
-group = 'net.javamicros'
-version = '0.0.1-SNAPSHOT'
-description = 'Demo project for Spring Boot Stock Service'
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
-
-repositories {
-	mavenCentral()
-	maven { url = 'https://repo.spring.io/snapshot' }
-    maven { url = "https://packages.confluent.io/maven/" }
-}
-
 dependencies {
+    implementation project(':base-domains')
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
-    implementation project(':base-domains')
-    implementation 'org.postgresql:postgresql:42.7.10'
-
     implementation 'io.confluent:kafka-avro-serializer:7.6.0'
-
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.kafka:spring-kafka-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
 }
 
 avro {

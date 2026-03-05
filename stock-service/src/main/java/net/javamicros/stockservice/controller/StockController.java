@@ -1,7 +1,7 @@
 package net.javamicros.stockservice.controller;
 
+import net.javamicros.avro.OrderEvent;
 import net.javamicros.basedomains.dto.OrderDbModel;
-import net.javamicros.basedomains.dto.OrderEventModel;
 import net.javamicros.stockservice.mapper.OrderEventMapper;
 import net.javamicros.stockservice.producer.StockProducer;
 import net.javamicros.stockservice.service.OrderDbService;
@@ -36,7 +36,7 @@ public class StockController {
         orderDbService.saveOrder(orderDbModel);
 
         executor.schedule(() -> {
-            OrderEventModel orderEvent = orderEventMapper.toOrderEventModel(orderDbModel);
+            OrderEvent orderEvent = orderEventMapper.toAvroEvent(orderDbModel);
             /**
              * Send event with final state to kafka for interraction with order-service.
              * */

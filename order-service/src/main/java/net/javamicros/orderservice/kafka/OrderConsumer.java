@@ -1,7 +1,7 @@
 package net.javamicros.orderservice.kafka;
 
+import net.javamicros.avro.OrderEvent;
 import net.javamicros.basedomains.dto.OrderDbModel;
-import net.javamicros.basedomains.dto.OrderEventModel;
 import net.javamicros.basedomains.dto.OrderStatus;
 import net.javamicros.orderservice.mapper.OrderMapper;
 import net.javamicros.orderservice.service.OrderDbService;
@@ -29,12 +29,12 @@ public class OrderConsumer {
             groupId = "stock",
             containerFactory = "kafkaListenerContainerFactory"
     )
-    public void consume(OrderEventModel orderEvent, Acknowledgment ack) {
+    public void consume(OrderEvent orderEvent, Acknowledgment ack) {
         log.info("Received order event in Stock-service => {}", orderEvent);
 
         try {
             // 👉 ТЕСТ DLQ
-            if (orderEvent.getStatus() == OrderStatus.FAILED) {
+            if (orderEvent.getStatus().equals(OrderStatus.FAILED)) {
                 throw new RuntimeException("Test DLQ - status FAILED");
             }
 

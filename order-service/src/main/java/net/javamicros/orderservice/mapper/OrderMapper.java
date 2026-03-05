@@ -1,22 +1,23 @@
 package net.javamicros.orderservice.mapper;
 
+import net.javamicros.avro.OrderEvent;
 import net.javamicros.basedomains.dto.OrderApiModel;
 import net.javamicros.basedomains.dto.OrderDbModel;
-import net.javamicros.basedomains.dto.OrderEventModel;
 import net.javamicros.basedomains.dto.OrderStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.UUID;
 
-@Mapper(componentModel = "spring", imports = {UUID.class, OrderStatus.class})
+@Mapper(componentModel = "spring", imports = {UUID.class, OrderStatus.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper {
 
     // Маппинг для Kafka Event
     @Mapping(target = "orderId", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    OrderEventModel toEvent(OrderApiModel apiModel);
+    OrderEvent toEvent(OrderApiModel apiModel);
 
     // Маппинг для БД (замена старого ручного маппера)
     @Mapping(target = "orderId", expression = "java(UUID.randomUUID().toString())")
@@ -26,5 +27,5 @@ public interface OrderMapper {
 
     // Добавим маппинг из Event в DB для Consumer
     @Mapping(target = "orderStatus", source = "status")
-    OrderDbModel eventToDbModel(OrderEventModel eventModel);
+    OrderDbModel eventToDbModel(OrderEvent eventModel);
 }

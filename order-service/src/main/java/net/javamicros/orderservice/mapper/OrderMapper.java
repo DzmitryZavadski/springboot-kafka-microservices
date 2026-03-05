@@ -2,22 +2,29 @@ package net.javamicros.orderservice.mapper;
 
 import net.javamicros.basedomains.dto.OrderApiModel;
 import net.javamicros.basedomains.dto.OrderDbModel;
+import net.javamicros.basedomains.dto.OrderEventModel;
 import net.javamicros.basedomains.dto.OrderStatus;
-import org.springframework.stereotype.Service;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.UUID;
 
-@Service
-public class OrderMapper {
+@Mapper(componentModel = "spring", imports = {UUID.class, OrderStatus.class})
+public interface OrderMapper {
 
-    public OrderDbModel toOrderDbModel(OrderApiModel orderApiModel) {
-        OrderDbModel orderDbModel = new OrderDbModel();
-        orderDbModel.setOrderId(UUID.randomUUID().toString());
-        orderDbModel.setOrderStatus(OrderStatus.PENDING);
-        orderDbModel.setOrderName("Order");
-        orderDbModel.setQuantity(orderApiModel.getQuantity());
-        orderDbModel.setPrice(orderApiModel.getPrice());
+    // Маппинг для Kafka Event
+    @Mapping(target = "orderId", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    OrderEventModel toEvent(OrderApiModel apiModel);
 
-        return orderDbModel;
-    }
+    // Маппинг для БД (замена старого ручного маппера)
+    @Mapping(target = "orderId", expression = "java(UUID.randomUUID().toString())")
+    @Mapping(target = "orderStatus", constant = "PENDING")
+    @Mapping(target = "orderName", constant = "Order")
+    OrderDbModel toOrderDbModel(OrderApiModel apiModel);
+
+    // Добавим маппинг из Event в DB для Consumer
+    @Mapping(target = "orderStatus", source = "status")
+    OrderDbModel eventToDbModel(OrderEventModel eventModel);
 }

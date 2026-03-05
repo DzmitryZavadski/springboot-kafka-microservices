@@ -3,6 +3,7 @@ package net.javamicros.orderservice.kafka;
 import net.javamicros.basedomains.dto.OrderDbModel;
 import net.javamicros.basedomains.dto.OrderEventModel;
 import net.javamicros.basedomains.dto.OrderStatus;
+import net.javamicros.orderservice.mapper.OrderMapper;
 import net.javamicros.orderservice.service.OrderDbService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,17 +16,13 @@ public class OrderConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(OrderConsumer.class);
 
-
     private final OrderDbService orderDbService;
+    private final OrderMapper orderMapper;
 
-    public OrderConsumer(OrderDbService orderDbService) {
+    public OrderConsumer(OrderDbService orderDbService, OrderMapper orderMapper) {
         this.orderDbService = orderDbService;
+        this.orderMapper = orderMapper;
     }
-
-    /**
-     * Add db service and change state to final from kafka event.
-     *
-     */
 
     @KafkaListener(
             topics = "${spring.kafka.topic.name}",
@@ -43,15 +40,12 @@ public class OrderConsumer {
 
             // save the order event into the database
             // OrderEventModel -> OrderDbModel
-            OrderDbModel orderDbModel = new OrderDbModel();
-            orderDbModel.setOrderId(orderEvent.getOrderId());
-            orderDbModel.setOrderStatus(orderEvent.getStatus());
+            OrderDbModel orderDbModel = orderMapper.eventToDbModel(orderEvent);
 
             orderDbService.updateOrder(orderDbModel);
-
             ack.acknowledge();
         } catch (Exception e) {
-            // 👉 ТЕСТ DLQ
+            // ТЕСТ DLQ
             log.error("Processing failed", e);
             throw e;
         }

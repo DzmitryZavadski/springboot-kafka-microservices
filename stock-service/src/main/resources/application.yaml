@@ -9,6 +9,7 @@ spring:
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       properties:
         spring.json.trusted.packages: "net.javamicros.orderservice.dto"
+        schema.registry.url: http://localhost:8081

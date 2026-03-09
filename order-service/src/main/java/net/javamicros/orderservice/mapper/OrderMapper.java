@@ -8,9 +8,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
 import java.util.UUID;
 
-@Mapper(componentModel = "spring", imports = {UUID.class, OrderStatus.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(
+        componentModel = "spring",
+        imports = {UUID.class, OrderStatus.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface OrderMapper {
 
     // Маппинг для Kafka Event
@@ -28,4 +33,7 @@ public interface OrderMapper {
     // Добавим маппинг из Event в DB для Consumer
     @Mapping(target = "orderStatus", source = "status")
     OrderDbModel eventToDbModel(OrderEvent eventModel);
+
+    // MapStruct автоматически использует метод toApiModel для каждого элемента
+    List<OrderApiModel> toApiModels(List<OrderDbModel> orders);
 }

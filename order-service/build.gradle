@@ -8,7 +8,9 @@ dependencies {
     implementation project(':base-domains')
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.kafka:spring-kafka'
-    implementation "io.confluent:kafka-avro-serializer:7.6.0"
+    implementation('io.confluent:kafka-avro-serializer:7.6.0') {
+        exclude group: 'com.fasterxml.jackson.core'
+    }
 }
 
 avro {

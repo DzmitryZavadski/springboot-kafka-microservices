@@ -33,3 +33,6 @@ database:
   username: postgres
   password: postgres
   driver-class-name: org.postgresql.Driver
+
+server:
+  port: 8080

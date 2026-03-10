@@ -1,9 +1,9 @@
 package net.javamicros.orderservice.mapper;
 
 import net.javamicros.avro.OrderEvent;
-import net.javamicros.basedomains.dto.OrderApiModel;
 import net.javamicros.basedomains.dto.OrderDbModel;
 import net.javamicros.basedomains.dto.OrderStatus;
+import net.javamicros.order.dto.OrderApiModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -36,4 +36,9 @@ public interface OrderMapper {
 
     // MapStruct автоматически использует метод toApiModel для каждого элемента
     List<OrderApiModel> toApiModels(List<OrderDbModel> orders);
+
+    // Маппинг для  (замена старого ручного маппера)
+    net.javamicros.client.dto.OrderApiModel toOrderApiModel(OrderDbModel dbModel);
+
+    net.javamicros.client.dto.OrderApiModel toClientDto(net.javamicros.order.dto.OrderApiModel serverDto);
 }

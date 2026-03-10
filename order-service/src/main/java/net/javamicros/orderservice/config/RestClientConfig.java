@@ -1,5 +1,7 @@
 package net.javamicros.orderservice.config;
 
+import net.javamicros.client.ApiClient;
+import net.javamicros.client.api.StockApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
@@ -7,11 +9,18 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-    @Bean("stockRest")
-    RestClient restClient() {
-        return RestClient
-                .builder()
-                .baseUrl("http://localhost:8081")
-                .build();
+//    @Bean("stockRest")
+//    RestClient restClient() {
+//        return RestClient
+//                .builder()
+//                .baseUrl("http://localhost:8081")
+//                .build();
+//    }
+
+    @Bean
+    public StockApi stockApi() {
+        ApiClient apiClient = new ApiClient();
+        apiClient.setBasePath("http://localhost:8081");
+        return new StockApi(apiClient);
     }
 }

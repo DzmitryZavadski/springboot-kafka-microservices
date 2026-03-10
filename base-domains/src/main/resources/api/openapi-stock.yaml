@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: Stock Service API
+  description: API для управления заказами (Kafka Microservices)
+  version: 1.0.0
+
+paths:
+  /stock:
+    post:
+      tags:
+        - Stock
+      summary: Create new list
+      operationId: placeOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderApiModel'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: string
+
+components:
+  schemas:
+    OrderApiModel:
+      type: object
+      required:
+        - orderId
+        - orderName
+        - quantity
+        - price
+      properties:
+        orderId:
+          type: string
+        orderName:
+          type: string
+          example: "Order-101"
+        quantity:
+          type: integer
+          format: int32
+          example: 5
+        price:
+          type: number
+          format: double
+          example: 199.99

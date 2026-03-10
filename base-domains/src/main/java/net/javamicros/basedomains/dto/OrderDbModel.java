@@ -13,6 +13,10 @@ import lombok.*;
 @NoArgsConstructor
 public class OrderDbModel {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "order_id")
     private String orderId;
 
     private String orderName;
@@ -22,29 +26,3 @@ public class OrderDbModel {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 }
-
-//Api model
-/**
- * OrderApiModel
- * orderName
- * quantity
- * price
- * */
-
-//Rest client model
-/**
- * orderId
- * orderName
- * quantity
- * price
- * */
-
-//Db model
-// !!!!! Can not use in controller in production code. NEVER!!!
-/**
- * orderId
- * orderName
- * orderStatus
- * quantity
- * price
- * */

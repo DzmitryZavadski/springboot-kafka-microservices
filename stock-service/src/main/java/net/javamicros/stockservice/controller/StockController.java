@@ -1,48 +1,27 @@
 package net.javamicros.stockservice.controller;
 
-import net.javamicros.avro.OrderEvent;
-import net.javamicros.basedomains.dto.OrderDbModel;
-import net.javamicros.stockservice.mapper.OrderEventMapper;
-import net.javamicros.stockservice.producer.StockProducer;
-import net.javamicros.stockservice.service.OrderDbService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import net.javamicros.stock.api.StockApi;
+import net.javamicros.stock.dto.OrderApiModel;
+import net.javamicros.stockservice.service.StockService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 @RestController
-public class StockController {
+public class StockController implements StockApi {
+    /**
+     * 1 Add mappers from api to db
+     */
+    private final StockService stockService;
 
-    private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-
-    private final OrderDbService orderDbService;
-
-    private final StockProducer stockProducer;
-
-    private final OrderEventMapper orderEventMapper;
-
-    public StockController(OrderDbService orderDbService, StockProducer stockProducer, OrderEventMapper orderEventMapper) {
-        this.orderDbService = orderDbService;
-        this.stockProducer = stockProducer;
-        this.orderEventMapper = orderEventMapper;
+    public StockController(StockService stockService) {
+        this.stockService = stockService;
     }
 
-    @PostMapping("/stock")
-    public String stock(@RequestBody OrderDbModel orderDbModel) {
+    @Override
+    public ResponseEntity<String> placeOrder(OrderApiModel orderApiModel) {
 
-        orderDbService.saveOrder(orderDbModel);
+        String orderId = stockService.processOrder(orderApiModel);
 
-        executor.schedule(() -> {
-            OrderEvent orderEvent = orderEventMapper.toAvroEvent(orderDbModel);
-            /**
-             * Send event with final state to kafka for interraction with order-service.
-             * */
-            stockProducer.sendMessage(orderEvent);
-        }, 3, TimeUnit.SECONDS);
-
-        return orderDbModel.getOrderId();
+        return ResponseEntity.ok(orderId);
     }
 }

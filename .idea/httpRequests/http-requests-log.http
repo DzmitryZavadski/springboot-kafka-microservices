@@ -1,0 +1,44 @@
+GET http://localhost:8080/api/v1/orders
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.2.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-03-20T160822.200.json
+
+###
+
+POST http://localhost:8080/api/v1/orders
+Content-Type: application/json
+Content-Length: 65
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.2.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "orderName": "Test order",
+  "quantity": 2,
+  "price": 9980
+}
+
+<> 2026-03-20T160700.201.json
+
+###
+
+POST http://localhost:8080/api/v1/orders
+Content-Type: application/json
+Content-Length: 65
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.2.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "orderName": "Test order",
+  "quantity": 2,
+  "price": 9980
+}
+
+<> 2026-03-20T160508.201.json
+
+###
+

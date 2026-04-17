@@ -5,24 +5,29 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.42/8365263844ebb62398e0dc33057ba10ba472d3b8/lombok-1.18.42.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapstruct/mapstruct-processor/1.6.3/52e345c907fbf173b376586c7f8b131d53fa5867/mapstruct-processor-1.6.3.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok-mapstruct-binding/0.2.0/2f1cf9ced7b720ba4996c942b816669e63f0fa4f/lombok-mapstruct-binding-0.2.0.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
+        <module name="springboot-kafka-microservices.email-service.main" />
         <module name="springboot-kafka-microservices.base-domains.main" />
+        <module name="springboot-kafka-microservices.order-service.main" />
+        <module name="springboot-kafka-microservices.stock-service.main" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
+        </processorPath>
+        <module name="springboot-kafka-microservices.order-service.test" />
+        <module name="springboot-kafka-microservices.stock-service.test" />
+        <module name="springboot-kafka-microservices.base-domains.test" />
+        <module name="springboot-kafka-microservices.email-service.test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />
   </component>
   <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="springboot-kafka-microservices.email-service" options="-parameters" />
-      <module name="springboot-kafka-microservices.email-service.main" options="-parameters" />
-      <module name="springboot-kafka-microservices.email-service.test" options="-parameters" />
-      <module name="springboot-kafka-microservices.order-service" options="-parameters" />
-      <module name="springboot-kafka-microservices.order-service.main" options="-parameters" />
-      <module name="springboot-kafka-microservices.order-service.test" options="-parameters" />
-      <module name="springboot-kafka-microservices.stock-service" options="-parameters" />
-      <module name="springboot-kafka-microservices.stock-service.main" options="-parameters" />
-      <module name="springboot-kafka-microservices.stock-service.test" options="-parameters" />
-    </option>
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-parameters" />
   </component>
 </project>
